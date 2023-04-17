@@ -1,0 +1,5 @@
+package: api
+output: server.gen.go
+generate:
+  echo-server: true
+  embedded-spec: true
