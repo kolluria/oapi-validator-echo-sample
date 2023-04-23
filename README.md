@@ -12,8 +12,9 @@ This is a sample project showcasing how to use [oapi-codegen](https://github.com
 
 Make sure you have the following tools installed:
 
-- [Go](https://golang.org/) (version 1.16 or higher)
-- [oapi-codegen](https://github.com/deepmap/oapi-codegen) (version 1.7.0 or higher)
+- [Go](https://golang.org/) (version 1.20)
+- [oapi-codegen](https://github.com/deepmap/oapi-codegen) (version 1.12.3)
+- [Taskfile](https://taskfile.dev/#/installation) (version 3.20.0)
 
 ### Installing
 

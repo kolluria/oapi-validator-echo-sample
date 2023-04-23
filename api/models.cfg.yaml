@@ -1,4 +1,0 @@
-package: api
-output: models.gen.go
-generate:
-  models: true

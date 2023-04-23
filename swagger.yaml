@@ -23,7 +23,7 @@ externalDocs:
   description: Find out more about Swagger
   url: http://swagger.io
 servers:
-  - url: https://petstore3.swagger.io/api/v3
+  - url: http://127.0.0.1:8080
 tags:
   - name: pet
     description: Everything about your Pets
@@ -625,6 +625,8 @@ components:
             - placed
             - approved
             - delivered
+          x-oapi-codegen-extra-tags:
+            validate: oneof=placed,approved,delivered
         complete:
           type: boolean
       xml:
@@ -732,6 +734,8 @@ components:
         name:
           type: string
           example: doggie
+          x-oapi-codegen-extra-tags:
+            validate: required
         category:
           $ref: '#/components/schemas/Category'
         photoUrls:
@@ -742,6 +746,8 @@ components:
             type: string
             xml:
               name: photoUrl
+          x-oapi-codegen-extra-tags:
+            validate: required
         tags:
           type: array
           xml:

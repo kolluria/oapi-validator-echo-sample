@@ -1,0 +1,4 @@
+package: servergen
+output: models.go
+generate:
+  models: true

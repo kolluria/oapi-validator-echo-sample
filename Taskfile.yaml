@@ -4,7 +4,7 @@ tasks:
   generate-server:
     desc: Generates the server code.
     cmds:
-      - cd api && oapi-codegen --config=server.cfg.yaml swagger.yaml
-      - cd api && oapi-codegen --config=models.cfg.yaml swagger.yaml
+      - cd server-gen && oapi-codegen --config=server.cfg.yaml ../swagger.yaml
+      - cd server-gen && oapi-codegen --config=models.cfg.yaml ../swagger.yaml
     preconditions:
-      - rm -rf api/*.gen.go
+      - rm -rf server-gen/*.go
