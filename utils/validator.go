@@ -1,12 +1,12 @@
-package echo
+package utils
 
 import (
 	"context"
 	"fmt"
 	"net/http"
+	"reflect"
 
 	"github.com/go-playground/validator/v10"
-	errorutils "github.com/oapi-validator-echo-sample/utils/errors"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 )
 
@@ -18,6 +18,7 @@ type Validator struct {
 // Validate validates the request body and returns a user facing error if validation fails
 func (v *Validator) Validate(i interface{}) error {
 	if err := v.validator.Struct(i); err != nil {
+		fmt.Println("err", err)
 		return convertToUserFacingError(err)
 	}
 
@@ -33,6 +34,26 @@ func NewValidator(ctx context.Context) *Validator {
 	return &Validator{validator: v}
 }
 
+func enumValidator(fl validator.FieldLevel) bool {
+	field := fl.Field()
+	param := fl.Param()
+	switch field.Kind() {
+	case reflect.String:
+		return enumValidatorString(field.String(), param)
+	default:
+		return false
+	}
+}
+
+func enumValidatorString(field, param string) bool {
+	for _, v := range param {
+		if string(v) == field {
+			return true
+		}
+	}
+	return false
+}
+
 // convertToUserFacingError converts the error(s) to a user facing error
 func convertToUserFacingError(err error) error {
 	switch t := err.(type) {
@@ -42,10 +63,9 @@ func convertToUserFacingError(err error) error {
 			validationErr += fmt.Sprintf("%s - %s, ", v.Field(), convertTag(v.Tag(), v.Param()))
 		}
 		validationErr = "Validation failed for the following field(s): " + validationErr[:len(validationErr)-2]
-		// Example: Validation failed for the following field(s): DeploymentFailureCount - must be excluded, DeploymentSuccessCount - must be excluded, Testbeds - must be excluded
-		return errorutils.New(http.StatusBadRequest, validationErr)
+		return New(http.StatusBadRequest, validationErr)
 	case *validator.InvalidValidationError:
-		return errorutils.New(http.StatusBadRequest, "Cannot validate request with body: %s", t.Type)
+		return New(http.StatusBadRequest, "Cannot validate request with body: %s", t.Type)
 	default:
 		return t
 	}

@@ -5,13 +5,14 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	echoutils "github.com/oapi-validator-echo-sample/utils/echo"
+	echoutils "github.com/oapi-validator-echo-sample/utils"
 )
 
 func main() {
 	ctx := context.TODO()
 	s := NewEchoServer(ctx,
 		echoutils.RequestIDWithConfig(),
+		middleware.Logger(),
 		middleware.CORSWithConfig(middleware.CORSConfig{
 			AllowOrigins: []string{"*"},
 			AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},

@@ -1,5 +1,6 @@
 version: "3"
-
+env:
+  SERVICE_NAME: oapi-validator-echo-sample
 tasks:
   generate-server:
     desc: Generates the server code.
@@ -8,3 +9,14 @@ tasks:
       - cd server-gen && oapi-codegen --config=models.cfg.yaml ../swagger.yaml
     preconditions:
       - rm -rf server-gen/*.go
+  run:
+    desc: Runs the executable.
+    cmds:
+      - task build
+      - ./bin/{{.SERVICE_NAME}}
+  build:
+    desc: Builds the executable.
+    cmds:
+      - go build -o bin/{{.SERVICE_NAME}} .
+    preconditions:
+      - rm -f bin/{{.SERVICE_NAME}}

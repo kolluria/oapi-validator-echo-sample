@@ -51,9 +51,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pet'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Pet'
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/Pet'
@@ -63,9 +60,6 @@ paths:
           description: Successful operation
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/Pet'
-            application/xml:
               schema:
                 $ref: '#/components/schemas/Pet'
         '400':
@@ -90,9 +84,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pet'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Pet'
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/Pet'
@@ -102,9 +93,6 @@ paths:
           description: Successful operation
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/Pet'
-            application/xml:
               schema:
                 $ref: '#/components/schemas/Pet'
         '405':
@@ -129,20 +117,14 @@ paths:
           schema:
             type: string
             default: available
-            enum:
-              - available
-              - pending
-              - sold
+            enum: [ available, pending, sold ]
+            x-oapi-codegen-extra-tags:
+              validate: "oneof=available pending sold"
       responses:
         '200':
           description: successful operation
           content:
             application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pet'
-            application/xml:
               schema:
                 type: array
                 items:
@@ -179,11 +161,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Pet'
-            application/xml:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pet'
         '400':
           description: Invalid tag value
       security:
@@ -212,15 +189,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Pet'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Pet'
         '400':
           description: Invalid ID supplied
         '404':
           description: Pet not found
       security:
-        - api_key: []
+        - api_key: [ ]
         - petstore_auth:
             - write:pets
             - read:pets
@@ -338,7 +312,7 @@ paths:
                   type: integer
                   format: int32
       security:
-        - api_key: []
+        - api_key: [ ]
   /store/order:
     post:
       tags:
@@ -349,9 +323,6 @@ paths:
       requestBody:
         content:
           application/json:
-            schema:
-              $ref: '#/components/schemas/Order'
-          application/xml:
             schema:
               $ref: '#/components/schemas/Order'
           application/x-www-form-urlencoded:
@@ -386,9 +357,6 @@ paths:
           description: successful operation
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/Order'
-            application/xml:
               schema:
                 $ref: '#/components/schemas/Order'
         '400':
@@ -427,9 +395,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/User'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/User'
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/User'
@@ -438,9 +403,6 @@ paths:
           description: successful operation
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-            application/xml:
               schema:
                 $ref: '#/components/schemas/User'
   /user/createWithList:
@@ -462,9 +424,6 @@ paths:
           description: Successful operation
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-            application/xml:
               schema:
                 $ref: '#/components/schemas/User'
         default:
@@ -504,9 +463,6 @@ paths:
                 type: string
                 format: date-time
           content:
-            application/xml:
-              schema:
-                type: string
             application/json:
               schema:
                 type: string
@@ -519,7 +475,7 @@ paths:
       summary: Logs out current logged in user session
       description: ''
       operationId: logoutUser
-      parameters: []
+      parameters: [ ]
       responses:
         default:
           description: successful operation
@@ -544,9 +500,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/User'
         '400':
           description: Invalid username supplied
         '404':
@@ -568,9 +521,6 @@ paths:
         description: Update an existent user in the store
         content:
           application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-          application/xml:
             schema:
               $ref: '#/components/schemas/User'
           application/x-www-form-urlencoded:
@@ -614,23 +564,24 @@ components:
           type: integer
           format: int32
           example: 7
+          minimum: 1
+          maximum: 100
+          x-oapi-codegen-extra-tags:
+            validate: gte=1 lte=100
         shipDate:
           type: string
           format: date-time
+          x-oapi-codegen-extra-tags:
+            validate: datetime
         status:
           type: string
           description: Order Status
           example: approved
-          enum:
-            - placed
-            - approved
-            - delivered
+          enum: [ placed, approved, delivered ]
           x-oapi-codegen-extra-tags:
-            validate: oneof=placed,approved,delivered
+            validate: oneof=placed approved delivered
         complete:
           type: boolean
-      xml:
-        name: order
     Customer:
       type: object
       properties:
@@ -643,15 +594,11 @@ components:
           example: fehguy
         address:
           type: array
-          xml:
-            name: addresses
-            wrapped: true
           items:
             $ref: '#/components/schemas/Address'
-      xml:
-        name: customer
     Address:
       type: object
+      required: [state, zip]
       properties:
         street:
           type: string
@@ -662,11 +609,13 @@ components:
         state:
           type: string
           example: CA
+          x-oapi-codegen-extra-tags:
+            validate: required
         zip:
           type: string
           example: '94301'
-      xml:
-        name: address
+          x-oapi-codegen-extra-tags:
+            validate: required
     Category:
       type: object
       properties:
@@ -677,8 +626,6 @@ components:
         name:
           type: string
           example: Dogs
-      xml:
-        name: category
     User:
       type: object
       properties:
@@ -698,6 +645,8 @@ components:
         email:
           type: string
           example: john@email.com
+          x-oapi-codegen-extra-tags:
+            validate: email
         password:
           type: string
           example: '12345'
@@ -706,11 +655,8 @@ components:
           example: '12345'
         userStatus:
           type: integer
-          description: User Status
           format: int32
           example: 1
-      xml:
-        name: user
     Tag:
       type: object
       properties:
@@ -719,8 +665,6 @@ components:
           format: int64
         name:
           type: string
-      xml:
-        name: tag
     Pet:
       required:
         - name
@@ -740,49 +684,39 @@ components:
           $ref: '#/components/schemas/Category'
         photoUrls:
           type: array
-          xml:
-            wrapped: true
           items:
             type: string
-            xml:
-              name: photoUrl
           x-oapi-codegen-extra-tags:
             validate: required
         tags:
           type: array
-          xml:
-            wrapped: true
           items:
             $ref: '#/components/schemas/Tag'
         status:
           type: string
           description: pet status in the store
-          enum:
-            - available
-            - pending
-            - sold
-      xml:
-        name: pet
+          enum: [ available, pending, sold ]
+          x-oapi-codegen-extra-tags:
+            validate: oneof=available pending sold
     ApiResponse:
       type: object
+      required: [ code, message ]
       properties:
         code:
           type: integer
           format: int32
         type:
           type: string
+          enum: [ success, error ]
+          x-oapi-codegen-extra-tags:
+            validate: oneof=success error
         message:
           type: string
-      xml:
-        name: '##default'
   requestBodies:
     Pet:
       description: Pet object that needs to be added to the store
       content:
         application/json:
-          schema:
-            $ref: '#/components/schemas/Pet'
-        application/xml:
           schema:
             $ref: '#/components/schemas/Pet'
     UserArray:

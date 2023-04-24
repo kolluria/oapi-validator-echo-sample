@@ -4,9 +4,10 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/go-logr/logr"
 	"github.com/labstack/echo/v4"
 	servergen "github.com/oapi-validator-echo-sample/server-gen"
-	echoutils "github.com/oapi-validator-echo-sample/utils/echo"
+	"github.com/oapi-validator-echo-sample/utils"
 )
 
 func NewEchoServer(ctx context.Context, middlewares ...echo.MiddlewareFunc) *echo.Echo {
@@ -17,8 +18,9 @@ func NewEchoServer(ctx context.Context, middlewares ...echo.MiddlewareFunc) *ech
 		e.Use(middleware)
 	}
 
-	// Use custom validator
-	e.Validator = echoutils.NewValidator(ctx)
+	// Use custom validator and error handler
+	e.Validator = utils.NewValidator(ctx)
+	e.HTTPErrorHandler = ErrorHandler
 
 	// Register handlers
 	servergen.RegisterHandlers(e, servergen.NewStrictHandler(
@@ -79,8 +81,13 @@ func (s strictServer) GetInventory(ctx context.Context, request servergen.GetInv
 }
 
 func (s strictServer) PlaceOrder(ctx context.Context, request servergen.PlaceOrderRequestObject) (servergen.PlaceOrderResponseObject, error) {
-	//TODO implement me
-	panic("implement me")
+	logger, err := logr.FromContext(ctx)
+	if err != nil {
+		panic(err)
+	}
+
+	logger.Info("endpoint: PlaceOrder")
+	return servergen.PlaceOrder200JSONResponse(*request.JSONBody), nil
 }
 
 func (s strictServer) DeleteOrder(ctx context.Context, request servergen.DeleteOrderRequestObject) (servergen.DeleteOrderResponseObject, error) {
@@ -138,6 +145,12 @@ func validateStructMiddleware(s servergen.StrictHandlerFunc, operationID string)
 			return nil, fmt.Errorf("%s failed to validate request body: %w", operationID, err)
 		}
 
+		return s(ctx, i)
+	}
+}
+
+func setLoggerMiddleware(s servergen.StrictHandlerFunc, operationID string) servergen.StrictHandlerFunc {
+	return func(ctx echo.Context, i interface{}) (interface{}, error) {
 		return s(ctx, i)
 	}
 }

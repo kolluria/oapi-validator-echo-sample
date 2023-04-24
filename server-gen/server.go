@@ -474,7 +474,6 @@ func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL 
 type AddPetRequestObject struct {
 	JSONBody     *AddPetJSONRequestBody
 	FormdataBody *AddPetFormdataRequestBody
-	Body         io.Reader
 }
 
 type AddPetResponseObject interface {
@@ -490,25 +489,6 @@ func (response AddPet200JSONResponse) VisitAddPetResponse(w http.ResponseWriter)
 	return json.NewEncoder(w).Encode(response)
 }
 
-type AddPet200ApplicationxmlResponse struct {
-	Body          io.Reader
-	ContentLength int64
-}
-
-func (response AddPet200ApplicationxmlResponse) VisitAddPetResponse(w http.ResponseWriter) error {
-	w.Header().Set("Content-Type", "application/xml")
-	if response.ContentLength != 0 {
-		w.Header().Set("Content-Length", fmt.Sprint(response.ContentLength))
-	}
-	w.WriteHeader(200)
-
-	if closer, ok := response.Body.(io.ReadCloser); ok {
-		defer closer.Close()
-	}
-	_, err := io.Copy(w, response.Body)
-	return err
-}
-
 type AddPet405Response struct {
 }
 
@@ -520,7 +500,6 @@ func (response AddPet405Response) VisitAddPetResponse(w http.ResponseWriter) err
 type UpdatePetRequestObject struct {
 	JSONBody     *UpdatePetJSONRequestBody
 	FormdataBody *UpdatePetFormdataRequestBody
-	Body         io.Reader
 }
 
 type UpdatePetResponseObject interface {
@@ -534,25 +513,6 @@ func (response UpdatePet200JSONResponse) VisitUpdatePetResponse(w http.ResponseW
 	w.WriteHeader(200)
 
 	return json.NewEncoder(w).Encode(response)
-}
-
-type UpdatePet200ApplicationxmlResponse struct {
-	Body          io.Reader
-	ContentLength int64
-}
-
-func (response UpdatePet200ApplicationxmlResponse) VisitUpdatePetResponse(w http.ResponseWriter) error {
-	w.Header().Set("Content-Type", "application/xml")
-	if response.ContentLength != 0 {
-		w.Header().Set("Content-Length", fmt.Sprint(response.ContentLength))
-	}
-	w.WriteHeader(200)
-
-	if closer, ok := response.Body.(io.ReadCloser); ok {
-		defer closer.Close()
-	}
-	_, err := io.Copy(w, response.Body)
-	return err
 }
 
 type UpdatePet400Response struct {
@@ -596,25 +556,6 @@ func (response FindPetsByStatus200JSONResponse) VisitFindPetsByStatusResponse(w 
 	return json.NewEncoder(w).Encode(response)
 }
 
-type FindPetsByStatus200ApplicationxmlResponse struct {
-	Body          io.Reader
-	ContentLength int64
-}
-
-func (response FindPetsByStatus200ApplicationxmlResponse) VisitFindPetsByStatusResponse(w http.ResponseWriter) error {
-	w.Header().Set("Content-Type", "application/xml")
-	if response.ContentLength != 0 {
-		w.Header().Set("Content-Length", fmt.Sprint(response.ContentLength))
-	}
-	w.WriteHeader(200)
-
-	if closer, ok := response.Body.(io.ReadCloser); ok {
-		defer closer.Close()
-	}
-	_, err := io.Copy(w, response.Body)
-	return err
-}
-
 type FindPetsByStatus400Response struct {
 }
 
@@ -638,25 +579,6 @@ func (response FindPetsByTags200JSONResponse) VisitFindPetsByTagsResponse(w http
 	w.WriteHeader(200)
 
 	return json.NewEncoder(w).Encode(response)
-}
-
-type FindPetsByTags200ApplicationxmlResponse struct {
-	Body          io.Reader
-	ContentLength int64
-}
-
-func (response FindPetsByTags200ApplicationxmlResponse) VisitFindPetsByTagsResponse(w http.ResponseWriter) error {
-	w.Header().Set("Content-Type", "application/xml")
-	if response.ContentLength != 0 {
-		w.Header().Set("Content-Length", fmt.Sprint(response.ContentLength))
-	}
-	w.WriteHeader(200)
-
-	if closer, ok := response.Body.(io.ReadCloser); ok {
-		defer closer.Close()
-	}
-	_, err := io.Copy(w, response.Body)
-	return err
 }
 
 type FindPetsByTags400Response struct {
@@ -699,25 +621,6 @@ func (response GetPetById200JSONResponse) VisitGetPetByIdResponse(w http.Respons
 	w.WriteHeader(200)
 
 	return json.NewEncoder(w).Encode(response)
-}
-
-type GetPetById200ApplicationxmlResponse struct {
-	Body          io.Reader
-	ContentLength int64
-}
-
-func (response GetPetById200ApplicationxmlResponse) VisitGetPetByIdResponse(w http.ResponseWriter) error {
-	w.Header().Set("Content-Type", "application/xml")
-	if response.ContentLength != 0 {
-		w.Header().Set("Content-Length", fmt.Sprint(response.ContentLength))
-	}
-	w.WriteHeader(200)
-
-	if closer, ok := response.Body.(io.ReadCloser); ok {
-		defer closer.Close()
-	}
-	_, err := io.Copy(w, response.Body)
-	return err
 }
 
 type GetPetById400Response struct {
@@ -791,7 +694,6 @@ func (response GetInventory200JSONResponse) VisitGetInventoryResponse(w http.Res
 type PlaceOrderRequestObject struct {
 	JSONBody     *PlaceOrderJSONRequestBody
 	FormdataBody *PlaceOrderFormdataRequestBody
-	Body         io.Reader
 }
 
 type PlaceOrderResponseObject interface {
@@ -856,25 +758,6 @@ func (response GetOrderById200JSONResponse) VisitGetOrderByIdResponse(w http.Res
 	return json.NewEncoder(w).Encode(response)
 }
 
-type GetOrderById200ApplicationxmlResponse struct {
-	Body          io.Reader
-	ContentLength int64
-}
-
-func (response GetOrderById200ApplicationxmlResponse) VisitGetOrderByIdResponse(w http.ResponseWriter) error {
-	w.Header().Set("Content-Type", "application/xml")
-	if response.ContentLength != 0 {
-		w.Header().Set("Content-Length", fmt.Sprint(response.ContentLength))
-	}
-	w.WriteHeader(200)
-
-	if closer, ok := response.Body.(io.ReadCloser); ok {
-		defer closer.Close()
-	}
-	_, err := io.Copy(w, response.Body)
-	return err
-}
-
 type GetOrderById400Response struct {
 }
 
@@ -894,7 +777,6 @@ func (response GetOrderById404Response) VisitGetOrderByIdResponse(w http.Respons
 type CreateUserRequestObject struct {
 	JSONBody     *CreateUserJSONRequestBody
 	FormdataBody *CreateUserFormdataRequestBody
-	Body         io.Reader
 }
 
 type CreateUserResponseObject interface {
@@ -913,26 +795,6 @@ func (response CreateUserdefaultJSONResponse) VisitCreateUserResponse(w http.Res
 	return json.NewEncoder(w).Encode(response.Body)
 }
 
-type CreateUserdefaultApplicationxmlResponse struct {
-	Body          io.Reader
-	StatusCode    int
-	ContentLength int64
-}
-
-func (response CreateUserdefaultApplicationxmlResponse) VisitCreateUserResponse(w http.ResponseWriter) error {
-	w.Header().Set("Content-Type", "application/xml")
-	if response.ContentLength != 0 {
-		w.Header().Set("Content-Length", fmt.Sprint(response.ContentLength))
-	}
-	w.WriteHeader(response.StatusCode)
-
-	if closer, ok := response.Body.(io.ReadCloser); ok {
-		defer closer.Close()
-	}
-	_, err := io.Copy(w, response.Body)
-	return err
-}
-
 type CreateUsersWithListInputRequestObject struct {
 	Body *CreateUsersWithListInputJSONRequestBody
 }
@@ -948,25 +810,6 @@ func (response CreateUsersWithListInput200JSONResponse) VisitCreateUsersWithList
 	w.WriteHeader(200)
 
 	return json.NewEncoder(w).Encode(response)
-}
-
-type CreateUsersWithListInput200ApplicationxmlResponse struct {
-	Body          io.Reader
-	ContentLength int64
-}
-
-func (response CreateUsersWithListInput200ApplicationxmlResponse) VisitCreateUsersWithListInputResponse(w http.ResponseWriter) error {
-	w.Header().Set("Content-Type", "application/xml")
-	if response.ContentLength != 0 {
-		w.Header().Set("Content-Length", fmt.Sprint(response.ContentLength))
-	}
-	w.WriteHeader(200)
-
-	if closer, ok := response.Body.(io.ReadCloser); ok {
-		defer closer.Close()
-	}
-	_, err := io.Copy(w, response.Body)
-	return err
 }
 
 type CreateUsersWithListInputdefaultResponse struct {
@@ -1003,28 +846,6 @@ func (response LoginUser200JSONResponse) VisitLoginUserResponse(w http.ResponseW
 	w.WriteHeader(200)
 
 	return json.NewEncoder(w).Encode(response.Body)
-}
-
-type LoginUser200ApplicationxmlResponse struct {
-	Body          io.Reader
-	Headers       LoginUser200ResponseHeaders
-	ContentLength int64
-}
-
-func (response LoginUser200ApplicationxmlResponse) VisitLoginUserResponse(w http.ResponseWriter) error {
-	w.Header().Set("X-Expires-After", fmt.Sprint(response.Headers.XExpiresAfter))
-	w.Header().Set("X-Rate-Limit", fmt.Sprint(response.Headers.XRateLimit))
-	w.Header().Set("Content-Type", "application/xml")
-	if response.ContentLength != 0 {
-		w.Header().Set("Content-Length", fmt.Sprint(response.ContentLength))
-	}
-	w.WriteHeader(200)
-
-	if closer, ok := response.Body.(io.ReadCloser); ok {
-		defer closer.Close()
-	}
-	_, err := io.Copy(w, response.Body)
-	return err
 }
 
 type LoginUser400Response struct {
@@ -1092,25 +913,6 @@ func (response GetUserByName200JSONResponse) VisitGetUserByNameResponse(w http.R
 	return json.NewEncoder(w).Encode(response)
 }
 
-type GetUserByName200ApplicationxmlResponse struct {
-	Body          io.Reader
-	ContentLength int64
-}
-
-func (response GetUserByName200ApplicationxmlResponse) VisitGetUserByNameResponse(w http.ResponseWriter) error {
-	w.Header().Set("Content-Type", "application/xml")
-	if response.ContentLength != 0 {
-		w.Header().Set("Content-Length", fmt.Sprint(response.ContentLength))
-	}
-	w.WriteHeader(200)
-
-	if closer, ok := response.Body.(io.ReadCloser); ok {
-		defer closer.Close()
-	}
-	_, err := io.Copy(w, response.Body)
-	return err
-}
-
 type GetUserByName400Response struct {
 }
 
@@ -1131,7 +933,6 @@ type UpdateUserRequestObject struct {
 	Username     string `json:"username"`
 	JSONBody     *UpdateUserJSONRequestBody
 	FormdataBody *UpdateUserFormdataRequestBody
-	Body         io.Reader
 }
 
 type UpdateUserResponseObject interface {
@@ -1243,9 +1044,6 @@ func (sh *strictHandler) AddPet(ctx echo.Context) error {
 			return err
 		}
 	}
-	if strings.HasPrefix(ctx.Request().Header.Get("Content-Type"), "application/xml") {
-		request.Body = ctx.Request().Body
-	}
 
 	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
 		return sh.ssi.AddPet(ctx.Request().Context(), request.(AddPetRequestObject))
@@ -1287,9 +1085,6 @@ func (sh *strictHandler) UpdatePet(ctx echo.Context) error {
 		} else {
 			return err
 		}
-	}
-	if strings.HasPrefix(ctx.Request().Header.Get("Content-Type"), "application/xml") {
-		request.Body = ctx.Request().Body
 	}
 
 	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
@@ -1511,9 +1306,6 @@ func (sh *strictHandler) PlaceOrder(ctx echo.Context) error {
 			return err
 		}
 	}
-	if strings.HasPrefix(ctx.Request().Header.Get("Content-Type"), "application/xml") {
-		request.Body = ctx.Request().Body
-	}
 
 	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
 		return sh.ssi.PlaceOrder(ctx.Request().Context(), request.(PlaceOrderRequestObject))
@@ -1605,9 +1397,6 @@ func (sh *strictHandler) CreateUser(ctx echo.Context) error {
 		} else {
 			return err
 		}
-	}
-	if strings.HasPrefix(ctx.Request().Header.Get("Content-Type"), "application/xml") {
-		request.Body = ctx.Request().Body
 	}
 
 	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
@@ -1779,9 +1568,6 @@ func (sh *strictHandler) UpdateUser(ctx echo.Context, username string) error {
 			return err
 		}
 	}
-	if strings.HasPrefix(ctx.Request().Header.Get("Content-Type"), "application/xml") {
-		request.Body = ctx.Request().Body
-	}
 
 	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
 		return sh.ssi.UpdateUser(ctx.Request().Context(), request.(UpdateUserRequestObject))
@@ -1805,59 +1591,58 @@ func (sh *strictHandler) UpdateUser(ctx echo.Context, username string) error {
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/+xbe2/kthH/KhOlQBpA+7B96aULBI3vfBe4vZyN+NymsI0LV5pdMSeRCkntenvwdy+G",
-	"pLTSSvvyCwiSf/yQSM5w5jdPUp+DSGa5FCiMDkafAx0lmDH753HOf0KdS6GR/s2VzFEZjvZlJGP7dCJV",
-	"xkwwCrgwR4dBGJhFju5fnKIK7sIgQ63Z1I72L7VRXEzpnXvQelG9CeT4V4xMEAa3WUoDBcvo8Zdfxjhh",
-	"RWrs2NfM4FSqRZtNHtNPvGVZnmIwOggbDP/tRSfDjkZtWnAip3o5dGcuo5IvGnqmYlRdgiQapi6FsZQp",
-	"MkGsrPI/3GkDOZrTlYl///bly8OdJv9WMGG4WTTmvwx30bROeH7CTBMYMTPYMzzDtgDDQBtmCiuHGHWk",
-	"eG64FMHICQsu3NswQFFkwegqyFMWYRyEActzJWf2zxhTPkOFcXAT1lRWG9GkGga3Pcly3iMIT1H08NYo",
-	"1jNsavmYsZTHdg+BFCgn3zmaYbleuKR3tx0B0iqdxp2j6VB+Dbh/UTghZA+WBjnw1jioAH5vSLQxHcvp",
-	"lOMDxKPwt4I7OYRBnkgjL1XqrM5gpttmvSqcck7dkphSbHEvJqrV54rlOcbByKgC7zaALEcD7h1wASZB",
-	"0EYqrOGNzRhP2TilZzmK2O1Cy9SCre3NPH/V/jfp9AOrecDlvjv3cBcuNzq6cvKry/xmGw5zdJ6SiK5x",
-	"knuAaF8/aJgbdam7PCBmjKdNbP4qE/G9fd6PZNblOCZcafO+Bep/ykR0Db+f0aSskwbLUHcRyZnWc6ma",
-	"pIKDw6MX33QOT6TAHccWGtXFGhiTVGuuck2sW+OyaeG2bzAJWl3tH/JoPecYNUaF4mZxQXh3mmY5//gJ",
-	"rbfjxHmCLLZU/OTy/dIqcv4vXPiQZo3zIytMYuGayrlDb5anPOLWu9JLqfj/GImGPMsoSIzJ9WgwKBc4",
-	"6us5m05R9bkcSJowKGeRTelI5o5ZhSwe0SzrZVgMC1kosA/CYK64wfJtJmM+WdhX5EjsOBZFshCmGSOI",
-	"0KF7hLeGBJ+eyKhDpW+5iEEWBjKpENiY/rxwbAdhUFQbGw0Gy91YnIuJdFmFMCwyNfMiWRpk2ffNCU26",
-	"HxKugWtgoC0U4BwNXJDY4ALVDBWMmcYYpHOXZzmK4/NTOOoPQecY8QmPrOj7AP+VBURMwKS9lWvh9wLM",
-	"wFWpoCVfN39tP/u6D6eOqEm4ioEbVJYUyIl97Jy5VBjCHL+aIeg5N1GCMRhpB8So+ZT4UdqAjeYsSr64",
-	"FiWjQs4hwTQHCgeZDfZ2Hm1wnqBJUAE3X2kYLyBjn7iYQpQwMUW9pDDhglumuNGYTkCq8h0Fsv61+JAw",
-	"A3O2CGHOTQKUFhG/loFVolzAFAUqlobARAx4m0uNoGWG5aYFzmGCzBQKLfTOji+O+tfiWnw8nRAOv1II",
-	"qZSW2Qkxk2CJIzjsDwdnxxf0G2aotJflubeTkAYLiFIefYKrBBUu1YIxN1LVDekfhUq/WzW1+oDZYaXM",
-	"BcvSr/twnFoLMHyG6SIkbq0UUslimHFmef3lTcwNXBfD4RHCO3pTsgee9V8gQ1GAtAj+4iPt/YIEVGic",
-	"FCmkXHzSo2vRg6sPSR3OCnOpaReL5bam3CTFmCJOyWuP5bz6u9zW19VyWhYqcsqq6b4UdEVsbwqDcSrH",
-	"g4xpg2qgVTTIGBcDhY6eHsgcBcu5k2QQBimP0Fdp3pMe5yxKkAS06i/m83mf2bd9qaYDP1UP3p2+fvP+",
-	"4k3vsD/sJyZLbW6CKtNnEzJ9HmGXzxnYIQPy2NzY0FHCq1JUr+4mgjDwWKNo1x/2Dw6IkN9QMAqO+sP+",
-	"EeU2zCTWMRKabM4gtWk7yuM4BmbNgOzf21qZxVGSYX0EFUM0lHJwl0mhNq9kvChdJQoXPnIKJXbK4FdN",
-	"BMqCeFsyd+7zq/oKt735fN6jGNwrVIqCXED8wCVdrN1ngZaPf62QGaxJbSX3XSaaNvekB64JYNVxOBw+",
-	"rdAeYYcXRRSh1mT/FQQIZS+G37QRdCpsNQFc5IVjp0xcgtHV59W846oe+cNajnBzdxMGusgyRtXcZly6",
-	"MuHKJuU3lNsUHci+zGOrJgF4y7UhD05LjRdwGrew7Qb/Ce+23FCYPxrIh+tBfnoCuiBGXMH8YviiPZbC",
-	"lpAGJrIQ8Vqz+bcrwSne4W2E7vFjWU839luWcxfa6DCgFPPVYlkeTbHDnn4sUsMppfUV/4ylBWqbcowR",
-	"KPPiMcYuLYtkljHQmDPFDMbgqh/dMjtK0ynOVcQpbimWoUGlrQBWdNYgbSgXFOgy1DGliELzGBXGNoWY",
-	"cEqQbEWXp7bbSlANXeX0W4FqsSycdEl+CamyPzpqNDHu1dgg5TzIPnbqh1icr/RDthrOA1ZuWZS+j0XV",
-	"0fRo+CdcaZtBkb+vlLsJ/R9862kz9mmFvSDfh0ttpx2E9PPQ/jxyKS5ay+xvsArL1BaboDFkAA7uMF7s",
-	"hnjjlu5Awpozhkrvf4J5LZgNmz4pkr3SunH82Z5a3DnuyhORJp/uOTAfDZqwO7EvXQ60grgtzaalBlrd",
-	"rq7gyK3D9jx6dFK5slzanb+sZhl1Qlubjy2YblQcZTiPqzgnTV3JejVn7fQzP6EplLDtIy6mKXbq6Qc0",
-	"52heLayENrqG0xOQkzKBVnbt55P37yEH1M+UA65iqurjXt2QiTzAN1Q1zUlXXeRL/jW1zn+4Sd5Kle0B",
-	"ozLj0j7lKuxa8dOhquVA3jPXvduFnZWQ50999vBWPt+8H7mOnHJbXviMBbZDgfdPjerO5TOkGoiZYdvi",
-	"zaDIU8ni08xfUVgHOhr0lruEeWen5ST8jPA6jmPbhGQp/IiGeQF0qZdVI2sDt6h6l8aCjAyanjYKWdZ0",
-	"cNV2xlwwteg4XLp7ykK8fp1lZ1/6SGh1GNNgu/wEtC5QutYvFzMUxt8J2BJlM5YT2HwNEsnYnUX4Gxwc",
-	"dVfwPa0IPFDYSwSdN85zdzh1bJ4h3lsb9TjUkHcpIucb3H45dldTriVUV4Gsbup09pzPUxaV/VM7dLW5",
-	"1BS5He4u/zxNc+6sumPyiO25NYvuk7SUSzypVVdEds+NdotRFZa8uoXXNZW+q0nxGggNPttfW4qat1KB",
-	"o14KCYxagLcWOD3RLqLZ/N6dhUVwMBwO+3AsFibhYgpsLGdoH4JUIKTws2lqmvpjRONOqlApqfSa8qnE",
-	"6Q4hjhDvRNJKLNxW16RVXibPWR7tkvK6G2crSe9KOQR5oaKE6XLjq4lriYM15dF9NP0dfEMq9UegB8M+",
-	"nNmTaN9DbKq36sTqfpfnt1vcvfBao9wJ2mP151TuUziMx3Bsz1aPbQanK6R2gya5qEJvCm/2DkhE/k6k",
-	"C2vNUqDt3iQIqZxOkfwk0CJtlLnDRX936CmC3aV+/FjXveY+iLjU3YBw4oitsKDMdlbAXTXqn1RCj7Gb",
-	"9UlZBUV/uFz4y2MefPbfJfYGkR1F9fs7rjec7rvVNKRcG/JINNn7yCmfoXDxGsq7k+ugqEtKpza83x+Y",
-	"OzVonfTaHdqnzIKeTufrjhlrqL0nSHZW6zoUpXLKRa1Kaqr/Hb31jmjzAUTi8AoUwmx65xbuLpur+5J7",
-	"NWKIRnk7dEmC3GiUIlNg8NasIVhdKt2nEbMvttq3PDcCqVW37+QpQt+Ctxz+3Htzm3OFunc8MS4crfT6",
-	"yY9wAZcfXsM8QQFGfkIB6GYFnQnFhk8N7sLg595P9P4dz3gHbiOWplQwKkjs/c00lXOMy7jnHVp3EtNZ",
-	"5FqpbAz8JZQGFTKWeUDDXt7JqXYQ5aK8SrLQBrPNxiHdtZJ11iELU8Xp7nC0t2FbRmVhICqUQmFW0gXQ",
-	"qLVDwjq2P5dC2VgyPShFcan8rp7BOoX9Cpyai1ifBG9vpe6AnO2Jo70bvqWo6Q7WYTdwfkCLmleL9/4b",
-	"hPsJ0BcR7niZKB40zpThCSX7+4i79yolHgkXP6Bx9jpeLCNjF0I6L649yDhdW38X42zi6mnt8o9exnTc",
-	"qfPhqNb3vHvEQOIJrikjbBtYzUpcNK43Hxy+7A/7w/7B6Nvht8OA9Oenr7LxZoZq2T4rjPtu49x18vf4",
-	"PGPzBxn176/apzVWEITd6ra0rd735MDzT+yXLejtHJVKa7UaSpVov6xXQuP7npu7/wcAAP//PPsCZjg8",
-	"AAA=",
+	"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",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

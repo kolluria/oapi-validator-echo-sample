@@ -12,6 +12,12 @@ const (
 	Petstore_authScopes = "petstore_auth.Scopes"
 )
 
+// Defines values for ApiResponseType.
+const (
+	Error   ApiResponseType = "error"
+	Success ApiResponseType = "success"
+)
+
 // Defines values for OrderStatus.
 const (
 	Approved  OrderStatus = "approved"
@@ -35,10 +41,13 @@ const (
 
 // ApiResponse defines model for ApiResponse.
 type ApiResponse struct {
-	Code    *int32  `json:"code,omitempty"`
-	Message *string `json:"message,omitempty"`
-	Type    *string `json:"type,omitempty"`
+	Code    int32            `json:"code"`
+	Message string           `json:"message"`
+	Type    *ApiResponseType `json:"type,omitempty" validate:"oneof=success error"`
 }
+
+// ApiResponseType defines model for ApiResponse.Type.
+type ApiResponseType string
 
 // Category defines model for Category.
 type Category struct {
@@ -51,11 +60,11 @@ type Order struct {
 	Complete *bool      `json:"complete,omitempty"`
 	Id       *int64     `json:"id,omitempty"`
 	PetId    *int64     `json:"petId,omitempty"`
-	Quantity *int32     `json:"quantity,omitempty"`
-	ShipDate *time.Time `json:"shipDate,omitempty"`
+	Quantity *int32     `json:"quantity,omitempty" validate:"gte=1 lte=100"`
+	ShipDate *time.Time `json:"shipDate,omitempty" validate:"datetime"`
 
 	// Status Order Status
-	Status *OrderStatus `json:"status,omitempty" validate:"oneof=placed,approved,delivered"`
+	Status *OrderStatus `json:"status,omitempty" validate:"oneof=placed approved delivered"`
 }
 
 // OrderStatus Order Status
@@ -69,7 +78,7 @@ type Pet struct {
 	PhotoUrls []string  `json:"photoUrls" validate:"required"`
 
 	// Status pet status in the store
-	Status *PetStatus `json:"status,omitempty"`
+	Status *PetStatus `json:"status,omitempty" validate:"oneof=available pending sold"`
 	Tags   *[]Tag     `json:"tags,omitempty"`
 }
 
@@ -84,14 +93,12 @@ type Tag struct {
 
 // User defines model for User.
 type User struct {
-	Email     *string `json:"email,omitempty"`
-	FirstName *string `json:"firstName,omitempty"`
-	Id        *int64  `json:"id,omitempty"`
-	LastName  *string `json:"lastName,omitempty"`
-	Password  *string `json:"password,omitempty"`
-	Phone     *string `json:"phone,omitempty"`
-
-	// UserStatus User Status
+	Email      *string `json:"email,omitempty" validate:"email"`
+	FirstName  *string `json:"firstName,omitempty"`
+	Id         *int64  `json:"id,omitempty"`
+	LastName   *string `json:"lastName,omitempty"`
+	Password   *string `json:"password,omitempty"`
+	Phone      *string `json:"phone,omitempty"`
 	UserStatus *int32  `json:"userStatus,omitempty"`
 	Username   *string `json:"username,omitempty"`
 }
