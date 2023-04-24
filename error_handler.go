@@ -23,9 +23,6 @@ func ErrorHandler(err error, c echo.Context) {
 
 	code := int32(http.StatusInternalServerError)
 	msg := "Internal Server Error"
-	respType := "error"
-
-	// TODO: unwrap the error and set the code, message and type accordingly
 	err = errors.Unwrap(err)
 	if t, ok := err.(utils.Error); ok {
 		code = t.Code()
@@ -33,9 +30,9 @@ func ErrorHandler(err error, c echo.Context) {
 	}
 
 	err = c.JSON(int(code), servergen.ApiResponse{
-		Code:    &code,
-		Message: &msg,
-		Type:    &respType,
+		Code:    code,
+		Message: msg,
+		Type:    utils.TypeToPtr(servergen.Error),
 	})
 	if err != nil {
 		e.Logger.Error(err, "Error writing error response")
