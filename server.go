@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/go-logr/logr"
 	"github.com/labstack/echo/v4"
 	servergen "github.com/oapi-validator-echo-sample/server-gen"
 	"github.com/oapi-validator-echo-sample/utils"
@@ -33,6 +32,7 @@ func NewEchoServer(ctx context.Context, middlewares ...echo.MiddlewareFunc) *ech
 	return e
 }
 
+// strictServer is the implementation of the servergen.Server interface
 type strictServer struct{}
 
 func (s strictServer) AddPet(ctx context.Context, request servergen.AddPetRequestObject) (servergen.AddPetResponseObject, error) {
@@ -81,12 +81,6 @@ func (s strictServer) GetInventory(ctx context.Context, request servergen.GetInv
 }
 
 func (s strictServer) PlaceOrder(ctx context.Context, request servergen.PlaceOrderRequestObject) (servergen.PlaceOrderResponseObject, error) {
-	logger, err := logr.FromContext(ctx)
-	if err != nil {
-		panic(err)
-	}
-
-	logger.Info("endpoint: PlaceOrder")
 	return servergen.PlaceOrder200JSONResponse(*request.JSONBody), nil
 }
 
@@ -145,12 +139,6 @@ func validateStructMiddleware(s servergen.StrictHandlerFunc, operationID string)
 			return nil, fmt.Errorf("%s failed to validate request body: %w", operationID, err)
 		}
 
-		return s(ctx, i)
-	}
-}
-
-func setLoggerMiddleware(s servergen.StrictHandlerFunc, operationID string) servergen.StrictHandlerFunc {
-	return func(ctx echo.Context, i interface{}) (interface{}, error) {
 		return s(ctx, i)
 	}
 }

@@ -567,10 +567,9 @@ components:
           minimum: 1
           maximum: 100
           x-oapi-codegen-extra-tags:
-            validate: gte=1 lte=100
+            validate: gte=1,lte=100
         shipDate:
           type: string
-          format: date-time
           x-oapi-codegen-extra-tags:
             validate: datetime
         status:
