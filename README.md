@@ -13,10 +13,10 @@ This project uses the [Petstore API](https://petstore3.swagger.io/) as the API d
   - [Getting Started](#getting-started)
     - [Prerequisites](#prerequisites)
     - [Installing](#installing)
-    - [Project structure](#project-structure)
-    - [Generating the Server](#generating-the-server)
-    - [Running the Server](#running-the-server)
-    - [Understanding the Code](#understanding-the-code)
+  - [Project structure](#project-structure)
+  - [Generating the Server](#generating-the-server)
+  - [Running the Server](#running-the-server)
+  - [Understanding the Code](#understanding-the-code)
 
 ## Getting Started
 
@@ -36,7 +36,7 @@ Clone the repository:
 git clone https://github.com/kolluria/oapi-validator-echo-sample.git
 ```
 
-### Project structure
+## Project structure
 
 The project is structured as follows:
 
@@ -48,7 +48,7 @@ The project is structured as follows:
 - `Taskfile.yaml`: Contains the tasks for the Service.
 - `swagger.yaml`: Contains the OpenAPI specification for the Service.
 
-### Generating the Server
+## Generating the Server
 
 To generate the server after making any changes to `swagger.yaml`, run the following command:
 
@@ -56,7 +56,7 @@ To generate the server after making any changes to `swagger.yaml`, run the follo
 task generate-server
 ```
 
-### Running the Server
+## Running the Server
 
 To run the server, run the following command:
 
@@ -64,7 +64,7 @@ To run the server, run the following command:
 task run
 ```
 
-### Understanding the code generation
+## Understanding the code generation
 
 The following is a brief explanation of the server generation process:
 
@@ -96,7 +96,7 @@ The following is a brief explanation of the server generation process:
   ├── server.go
   └── server.cfg.yaml
   ```
-### Understanding the validation process
+## Understanding the validation process
 
 * Since go-playground/validator is a tag-based validator, we need tags on the models to validate them.
 * `oapi-codegen` provides a way to add custom tags to the models using `x-oapi-codegen-extra-tags` extension.
