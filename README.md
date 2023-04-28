@@ -100,10 +100,13 @@ The following is a brief explanation of the server generation process:
 
 * Since go-playground/validator is a tag-based validator, we need tags on the models to validate them.
 * `oapi-codegen` provides a way to add custom tags to the models using `x-oapi-codegen-extra-tags` extension.
-* To demonstrate this, I added the following tags to `swagger.yaml` - 
+* To demonstrate this, I added the following baked-in tags to `swagger.yaml` - 
   * `validate: gte=1 lte=100` to quantity in `Order` schema.
   * `validate: datetime` to `shipDate` in `Order` schema.
   * `validate: oneof` to all the enums.
   * `validate: required` to all the required fields.
   * `validate: email` to `email` in `User` schema.
+* Additionally, I added the following custom tags to `swagger.yaml` - 
+  * `validate: base64` to `password` in `User` schema.
+  * Added a custom tag validator for `base64` in `utils/validators.go`. 
 * To see the validation in action, run the server and send a request with invalid data to the `POST /store/order` endpoint.
