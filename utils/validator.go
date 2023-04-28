@@ -2,6 +2,7 @@ package utils
 
 import (
 	"context"
+	"encoding/base64"
 	"fmt"
 	"net/http"
 	"reflect"
@@ -31,27 +32,32 @@ func NewValidator(ctx context.Context) *Validator {
 
 	logger.Info("Initializing validator")
 	v := validator.New()
+	registerCustomTagValidators(v)
 	return &Validator{validator: v}
 }
 
-func enumValidator(fl validator.FieldLevel) bool {
-	field := fl.Field()
-	param := fl.Param()
-	switch field.Kind() {
-	case reflect.String:
-		return enumValidatorString(field.String(), param)
-	default:
-		return false
+func registerCustomTagValidators(v *validator.Validate) {
+	err := v.RegisterValidation("base64", base64Validator)
+	if err != nil {
+		panic(err) // can be suppressed if required
 	}
 }
 
-func enumValidatorString(field, param string) bool {
-	for _, v := range param {
-		if string(v) == field {
-			return true
-		}
+func base64Validator(fl validator.FieldLevel) bool {
+	if fl.Field().Type().Kind() != reflect.String {
+		return false
 	}
-	return false
+
+	return isBase64(fl.Field().String())
+}
+
+func isBase64(s string) bool {
+	if len(s)%4 != 0 {
+		return false
+	}
+
+	_, err := base64.StdEncoding.DecodeString(s)
+	return err == nil
 }
 
 // convertToUserFacingError converts the error(s) to a user facing error

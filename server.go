@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"net/http"
 
 	"github.com/labstack/echo/v4"
 	servergen "github.com/oapi-validator-echo-sample/server-gen"
@@ -95,8 +96,11 @@ func (s strictServer) GetOrderById(ctx context.Context, request servergen.GetOrd
 }
 
 func (s strictServer) CreateUser(ctx context.Context, request servergen.CreateUserRequestObject) (servergen.CreateUserResponseObject, error) {
-	//TODO implement me
-	panic("implement me")
+	fmt.Println("endpoint: CreateUser")
+	return servergen.CreateUserdefaultJSONResponse{
+		Body:       *request.Body,
+		StatusCode: http.StatusOK,
+	}, nil
 }
 
 func (s strictServer) CreateUsersWithListInput(ctx context.Context, request servergen.CreateUsersWithListInputRequestObject) (servergen.CreateUsersWithListInputResponseObject, error) {

@@ -93,7 +93,7 @@ type User struct {
 	FirstName  *string `json:"firstName,omitempty"`
 	Id         *int64  `json:"id,omitempty"`
 	LastName   *string `json:"lastName,omitempty"`
-	Password   *string `json:"password,omitempty"`
+	Password   *string `json:"password,omitempty" validate:"omitempty,base64"`
 	Phone      *string `json:"phone,omitempty"`
 	UserStatus *int32  `json:"userStatus,omitempty"`
 	Username   *string `json:"username,omitempty"`
@@ -166,9 +166,6 @@ type PlaceOrderFormdataRequestBody = Order
 
 // CreateUserJSONRequestBody defines body for CreateUser for application/json ContentType.
 type CreateUserJSONRequestBody = User
-
-// CreateUserFormdataRequestBody defines body for CreateUser for application/x-www-form-urlencoded ContentType.
-type CreateUserFormdataRequestBody = User
 
 // CreateUsersWithListInputJSONRequestBody defines body for CreateUsersWithListInput for application/json ContentType.
 type CreateUsersWithListInputJSONRequestBody = CreateUsersWithListInputJSONBody
