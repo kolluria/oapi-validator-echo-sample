@@ -16,7 +16,10 @@ This project uses the [Petstore API](https://petstore3.swagger.io/) as the API d
   - [Project structure](#project-structure)
   - [Generating the Server](#generating-the-server)
   - [Running the Server](#running-the-server)
-  - [Understanding the Code](#understanding-the-code)
+  - [Understanding the code generation](#understanding-the-code-generation)
+  - [Understanding the validation process](#understanding-the-validation-process)
+  - [Future work](#future-work)
+  - [License](#license)
 
 ## Getting Started
 
@@ -110,3 +113,17 @@ The following is a brief explanation of the server generation process:
   * `validate: base64` to `password` in `User` schema.
   * Added a custom tag validator for `base64` in `utils/validators.go`. 
 * To see the validation in action, run the server and send a request with invalid data to the `POST /store/order` endpoint.
+
+## Future work
+
+Since my vision for this project is to be a template for future projects,
+I plan to do the following in the future(preferably with the help of the community):
+* Add more custom tags to the models.
+* Add more custom tag validators.
+* Add client generation.
+* Add tests.
+* Containerize the application.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
